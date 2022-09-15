@@ -1,15 +1,20 @@
 <template>
     <h1>Threads</h1>
     <div v-if="threads.length" class="thread-container">
-        <div v-for="(thread, threadIndex) in threads" :key="thread" class="thread"
+        <div v-for="(thread, threadIndex) in threads" :key="threadIndex" class="thread"
             :class="[
                 thread.length > 1 && collapsed ? 'thread-collapsed' : ''
             ]"
-        @click="toggleCollapse(thread)">
-            <div v-if="collapsed && thread.length > 1" :class="{ 'msg-bar' : collapsed}">
-                <h1>{{thread.length}} index: {{threadIndex}} messages</h1>
+        @click="toggleCollapse(threadIndex)">
+            <div v-if="collapsed && thread.length > 1" :class="{ 'msg-bar' : ' '}">
+                <h1 v-for="(message, messageIndex) in thread" :key="message.id"
+                    :class="[
+                        messageIndex == 0 ?  '' : 'bar-hide',
+                        message.score <= 5 ?  'bar-low' : 'bar-high'
+                    ]"
+                >{{thread.length}} messages</h1>
             </div>
-            <div v-for="(message) in thread" :key="message.id" class="message" @click="toggleCollapsed(thread, threadIndex)">
+            <div v-for="message in thread.reverse()" :key="message.id" class="message">
                 <div class="message-content">
                     <h1 :class="[
                         message.score >= 6 ? 'title-high' : 'low'
@@ -26,6 +31,7 @@
         </div>
     </div>
     <div v-else>loading messages...</div>
+    <button @click="gggg">test</button>
 </template>
 
 <script>
@@ -33,7 +39,6 @@ export default {
     data() {
         return{
             threads: [],
-            thread: [],
             collapsed: true
 
         }
@@ -45,12 +50,11 @@ export default {
         .catch(err => console.log(err.message))
     },
     methods: {
-        toggleCollapse(thread, ThreadIndex){
+        toggleCollapse(threadIndex){
+            if (threadIndex == threadIndex){
             this.collapsed = !this.collapsed
+            }
         },
-        gggg(message){
-            console.log(message.text, index)
-        }
 
         
         
@@ -130,7 +134,6 @@ export default {
     .thread-collapsed{
         $max: 5; //max amount messages which overlap can be viewed when collapsed
         $step: 8px;
-
         display: grid;
 
 
@@ -145,8 +148,10 @@ export default {
             }
         }
     }
+}
 
     .msg-bar{
+        h1{
         width: fit-content;
         margin: 0;
         background: lightblue;
@@ -155,19 +160,28 @@ export default {
         right: 36px;
         padding: 2px 38px;
         border-radius: 10px;
-        h1{
             font-size: 16px;
             color: white;
             margin: 0;
         }
+    }
+
+    .bar-hide{
+        display: none;
+    }
+
+    .bar-low{
+        background: $low !important;
+    }
 
     .bar-high{
-        background: $msgBarHigh;
-    }
+        background: $msgBarHigh !important;
     }
 
+
+
         
-    }
+
 
 
     
