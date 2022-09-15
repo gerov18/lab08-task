@@ -1,0 +1,13 @@
+
+$standartText: #999;
+$standartBackground: #f2f2f2;
+$low: #e89d40;
+$msgBarHigh:#21aae1;
+$titleHigh: #935fff;
+
+@mixin flexPosition($justify, $align){
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+}
+
