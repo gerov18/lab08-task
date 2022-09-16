@@ -5,7 +5,7 @@
             :class="[
                 thread.length > 1 && collapsed ? 'thread-collapsed' : ''
             ]"
-        @click="toggleCollapse(threadIndex)">
+        @click="toggleCollapse()">
             <div v-if="collapsed && thread.length > 1" :class="{ 'msg-bar' : ' '}">
                 <h1 v-for="(message, messageIndex) in thread" :key="message.id"
                     :class="[
@@ -50,10 +50,8 @@ export default {
         .catch(err => console.log(err.message))
     },
     methods: {
-        toggleCollapse(threadIndex){
-            if (threadIndex == threadIndex){
+        toggleCollapse(){
             this.collapsed = !this.collapsed
-            }
         },
 
         
