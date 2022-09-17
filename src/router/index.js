@@ -8,7 +8,6 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  
 ]
 
 const router = createRouter({

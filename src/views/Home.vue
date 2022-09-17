@@ -2,11 +2,9 @@
     <h1>Threads</h1>
     <div v-if="threads.length" class="thread-container">
         <div v-for="(thread, threadIndex) in threads" :key="threadIndex" class="thread"
-            :class="[
-                thread.length > 1 && collapsed ? 'thread-collapsed' : ''
-            ]"
-        @click="toggleCollapse()">
-            <div v-if="collapsed && thread.length > 1" :class="{ 'msg-bar' : ' '}">
+            :class="{ 'threadCollapsed' : thread.isCollapsed}"
+        @click="toggleCollapse(thread)">
+            <div v-if=" thread.length > 1" :class="{ 'msg-bar' : ' '}">
                 <h1 v-for="(message, messageIndex) in thread" :key="message.id"
                     :class="[
                         messageIndex == 0 ?  '' : 'bar-hide',
@@ -14,7 +12,7 @@
                     ]"
                 >{{thread.length}} messages</h1>
             </div>
-            <div v-for="message in thread.reverse()" :key="message.id" class="message">
+            <div v-for="message in thread" :key="message.id" class="message">
                 <div class="message-content">
                     <h1 :class="[
                         message.score >= 6 ? 'title-high' : 'low'
@@ -31,29 +29,40 @@
         </div>
     </div>
     <div v-else>loading messages...</div>
-    <button @click="gggg">test</button>
+    <button @click="test">test</button>
 </template>
 
 <script>
 export default {
     data() {
         return{
-            threads: [],
-            collapsed: true
-
+            threads: []
         }
     },
     mounted() { 
         fetch('http://localhost:3000/threads')
         .then((res) => res.json())
         .then(data => this.threads = data)
+        .then(console.log('test mounted'))
         .catch(err => console.log(err.message))
+
+        for(let i = 0; i < this.threads.length; i++){
+            if (this.threads[i].length > 1){
+                this.threads[i].isCollapsed = true
+            }
+        }
+
+    },
+    beforeUpdated(){
+            
     },
     methods: {
-        toggleCollapse(){
-            this.collapsed = !this.collapsed
+        toggleCollapse(thread){
+            thread.isCollapsed = !thread.isCollapsed
         },
-
+        test(){
+            console.log(this.threads)
+        }
         
         
     }
@@ -129,7 +138,7 @@ export default {
         }
     }
 
-    .thread-collapsed{
+    .threadCollapsed{
         $max: 5; //max amount messages which overlap can be viewed when collapsed
         $step: 8px;
         display: grid;
