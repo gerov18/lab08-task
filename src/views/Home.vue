@@ -43,7 +43,6 @@ export default {
         fetch('http://localhost:3000/threads')
         .then((res) => res.json())
         .then(data => this.threads = data)
-        .then(console.log('test mounted'))
         .catch(err => console.log(err.message))
 
         for(let i = 0; i < this.threads.length; i++){
