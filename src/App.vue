@@ -16,7 +16,14 @@
 body{
   margin: 0;
   background: $standartBackground;
+  @include flexPosition(center, initial);
 }
 
+@media screen and (max-width: 788px){
+  #app{
+    overflow-x: scroll;
+    padding: 0 10px;
+  }
+}
 
 </style>

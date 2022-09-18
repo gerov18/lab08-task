@@ -5,6 +5,8 @@ $low: #e89d40;
 $msgBarHigh:#21aae1;
 $titleHigh: #935fff;
 
+$expandedMargin: 10px 0; //expanded thread margin of the messages
+
 @mixin flexPosition($justify, $align){
     display: flex;
     justify-content: $justify;

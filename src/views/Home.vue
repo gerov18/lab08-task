@@ -1,10 +1,9 @@
 <template>
-    <h1>Threads</h1>
     <div v-if="threads.length" class="thread-container">
-        <div v-for="(thread, threadIndex) in threads" :key="threadIndex" class="thread"
-            :class="{ 'threadCollapsed' : thread.isCollapsed}"
+        <div v-for="(thread, threadIndex) in threads" :key="threadIndex" class="thread threadCollapsed"
+            :class="{ 'thread-expanded' : thread.isCollapsed}"
         @click="toggleCollapse(thread)">
-            <div v-if=" thread.length > 1" :class="{ 'msg-bar' : ' '}">
+            <div v-if=" thread.length > 1" class="msg-bar" :class="{ 'bar-hide' : thread.isCollapsed}">
                 <h1 v-for="(message, messageIndex) in thread" :key="message.id"
                     :class="[
                         messageIndex == 0 ?  '' : 'bar-hide',
@@ -23,7 +22,7 @@
                 </div>
                 <div class="message-info">
                     <p>{{ message.team }}</p>
-                    <p>{{ message.created_at }}</p>
+                    <p>{{ moment(message.created_at).format('MMM Do') }}</p>
                 </div>                
             </div>
         </div>
@@ -33,9 +32,11 @@
 </template>
 
 <script>
+let moment = require('moment')
 export default {
     data() {
         return{
+            moment:moment,
             threads: []
         }
     },
@@ -73,6 +74,10 @@ export default {
 
 <style lang="scss">
     @import './public/style'; 
+
+    body{
+        overflow-x: scroll !important;
+    }
     
     .low{
         color: $low;
@@ -84,12 +89,18 @@ export default {
         color: $titleHigh;
     }
 
-    .thread{
-        height: 100%;
-        margin-top: 40px !important;
+    .thread-container{
+        @include flexPosition(initial, center);
+        flex-direction: column;
         min-width: 320px;
         max-width: 768px;
-        margin: 24px auto;
+    }
+
+    .thread{
+        height: 100%;
+        width: 100%;
+        margin-top: 40px;
+        
         position: relative
 
     }
@@ -99,9 +110,10 @@ export default {
         @include flexPosition(center, initial);
         justify-content: space-between;
         background: white;
-        height: 120px;
+        height: 100%;
         width: 100%;
-        margin: 10px 0;
+        min-height: 120px;
+        margin: $expandedMargin;
         border-radius: 10px;
         box-shadow: 11px 12px 40px 7px rgba(0,0,0,0.2);
     }
@@ -109,28 +121,30 @@ export default {
     
 
     .message-content{
-        width: 70%;
+        width: 75%;
         @include flexPosition(space-around, flex-start);
         flex-direction: column;
-        margin: 24px;
+        margin: 1.25em;
+        margin-right: 0;
         text-align: left;
         h1{
-            font-size: 18px;
+            font-size: 1.25em;
             margin: 0;
         }
         p{
             margin: 0
         }
         p:last-of-type{
-            margin-top: 16px;
+            margin-top: 1em;
         }
     
     }
 
     .message-info{
-        @include flexPosition(space-around, flex-end);
+        @include flexPosition(initial, flex-end);
         flex-direction: column;
-        margin: 24px;
+        margin: 1.25em;
+        margin-left: 0;
         text-align: right;
 
         p{
@@ -151,11 +165,22 @@ export default {
             @for $i from 2 through $max{
             &:nth-of-type(#{$i}){
                 margin-top: #{-(($i - 1) * $step)};
-                margin-left: #{-(($i - 1) * $step)};
+                margin-right: #{-(($i - 1) * $step)};
+                }
+            &{
+
+            }
             }
         }
     }
-}
+
+    .thread-expanded{
+        display: block;
+        margin: 1.25em auto;
+        .message{
+            margin: $expandedMargin !important;
+        }
+    }
 
     .msg-bar{
         h1{
@@ -167,9 +192,15 @@ export default {
         right: 36px;
         padding: 2px 38px;
         border-radius: 10px;
-            font-size: 16px;
+            font-size: 1em;
             color: white;
             margin: 0;
+        }
+    }
+
+    .thread:first-of-type{
+        .msg-bar h1{
+            top: -34px;
         }
     }
 
