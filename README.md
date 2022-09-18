@@ -10,12 +10,6 @@ npm install moments
 ```
 npm install -g @vue/cli
 ```
-```
-npm install -g json-server
-```
-```
-json-server --watch db.json
-```
 
 ### Compiles and hot-reloads for development
 ```
@@ -25,6 +19,14 @@ npm run serve
 ### Compiles and minifies for production
 ```
 npm run build
+```
+
+### Setup json-sever
+```
+npm install -g json-server
+```
+```
+json-server --watch db.json
 ```
 
 ### Customize configuration
