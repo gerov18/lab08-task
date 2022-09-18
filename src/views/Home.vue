@@ -28,7 +28,6 @@
         </div>
     </div>
     <div v-else>loading messages...</div>
-    <button @click="test">test</button>
 </template>
 
 <script>
@@ -60,9 +59,6 @@ export default {
     methods: {
         toggleCollapse(thread){
             thread.isCollapsed = !thread.isCollapsed
-        },
-        test(){
-            console.log(this.threads)
         }
         
         
