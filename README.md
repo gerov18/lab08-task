@@ -4,6 +4,9 @@
 ```
 npm install
 ```
+```
+npm install moments
+```
 
 ### Compiles and hot-reloads for development
 ```
