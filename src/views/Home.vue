@@ -1,12 +1,12 @@
 <template>
     <div v-if="threads.length" class="thread-container">
         <div v-for="(thread, threadIndex) in threads" :key="threadIndex" class="thread threadCollapsed"
-            :class="{ 'thread-expanded' : thread.isCollapsed}"
+            :class="[ thread.isCollapsed & thread.length > 1? 'thread-expanded' : '']"
         @click="toggleCollapse(thread)">
             <div v-if=" thread.length > 1" class="msg-bar" :class="{ 'bar-hide' : thread.isCollapsed}">
                 <h1 v-for="(message, messageIndex) in thread" :key="message.id"
                     :class="[
-                        messageIndex == 0 ?  '' : 'bar-hide',
+                        messageIndex == thread.length-1 ?  '' : 'bar-hide',
                         message.score <= 5 ?  'bar-low' : 'bar-high'
                     ]"
                 >{{thread.length}} messages</h1>
